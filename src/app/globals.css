@@ -41,6 +41,14 @@ h1 {
     -webkit-text-fill-color: transparent;
 }
 
+.project-card {
+    transform: rotate(var(--rotation));
+}
+
+.project-card:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.1);
+}
+
 @keyframes titleEntrance {
     from {
         opacity: 0;

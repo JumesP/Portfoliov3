@@ -12,7 +12,7 @@ const Main = () => {
 
     return (
         <div className="MainContent">
-            <div className="Content">
+            <div className="Content mt-52">
                 <section className="blob-box">
                     <div className="blob">
                         {/*<img*/}
