@@ -88,19 +88,27 @@ const ProjectSwiper = ({projects}: {projects: ProjectCard[]}) => {
                 return (
                     <div
                         key={index}
-                        className={`project-card absolute aspect-[4/3] w-[40rem] ${transform} ${animation} ${exitAnimation}`}
-                        style={{"--rotation": `${card.rotation}deg`} as React.CSSProperties}
+                        className={`absolute animate-[cardDrop_1s_cubic-bezier(0.22,1,0.36,1)_both]`}
+                        style={{
+                            animationDelay: `${index * 250}ms`,
+                        }}
                     >
-                        <img src={card.image} alt={card.name} className={`rounded-xl h-full w-full object-cover`}/>
-                        <p className={`absolute bottom-5 left-1/2 -translate-x-1/2 text-black font-semibold h-16 flex items-center justify-center ${textBackground} p-3`}>{card.name}</p>
-                        <button onClick={() => handleLike(index)}
-                                className="absolute bottom-5 right-5 border-green-600 bg-green-700/40 border-2 w-16 h-16 rounded-4xl cursor-pointer hover:bg-green-700/80 flex justify-center items-center">
-                            <FaCheck className="text-green-600 text-xl" />
-                        </button>
-                        <button onClick={() => handleDislike(index)}
-                                className="absolute bottom-5 left-5 border-red-600 bg-red-700/40  border-2 w-16 h-16 rounded-4xl cursor-pointer hover:bg-red-700/60 flex justify-center items-center">
-                            <ImCross className="text-red-600 text-xl" />
-                        </button>
+                        <div
+                            key={index}
+                            className={`project-card aspect-[4/3] w-[40rem] ${transform} ${animation} ${exitAnimation}`}
+                            style={{"--rotation": `${card.rotation}deg`} as React.CSSProperties}
+                        >
+                            <img src={card.image} alt={card.name} className={`rounded-xl h-full w-full object-cover`}/>
+                            <p className={`absolute bottom-5 left-1/2 -translate-x-1/2 text-black font-semibold h-16 flex items-center justify-center ${textBackground} p-3`}>{card.name}</p>
+                            <button onClick={() => handleLike(index)}
+                                    className="absolute bottom-5 right-5 border-green-600 bg-green-700/40 border-2 w-16 h-16 rounded-4xl cursor-pointer hover:bg-green-700/80 flex justify-center items-center">
+                                <FaCheck className="text-green-600 text-xl" />
+                            </button>
+                            <button onClick={() => handleDislike(index)}
+                                    className="absolute bottom-5 left-5 border-red-600 bg-red-700/40  border-2 w-16 h-16 rounded-4xl cursor-pointer hover:bg-red-700/60 flex justify-center items-center">
+                                <ImCross className="text-red-600 text-xl" />
+                            </button>
+                        </div>
                     </div>
                 )
             })}

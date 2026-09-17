@@ -10,6 +10,7 @@
     --main-bg-color-2: #73946B;
     --main-bg-color-3: #9EBC8A;
     --main-bg-color-4: #D2D0A0;
+    --main-border-color-1: #73946B;
     --main-text-color: black;
     --main-font: 'Poppins', sans-serif;
 }
@@ -68,6 +69,63 @@ h1 {
     }
 
     50% {
+        opacity: 1;
+    }
+}
+
+/*@keyframes cardDrop {*/
+/*    0% {*/
+/*        transform: scale(2.5) rotate(15deg);*/
+/*        opacity: 0;*/
+/*    }*/
+
+/*    60% {*/
+/*        transform: scale(0.9) rotate(-5deg);*/
+/*        opacity: 1;*/
+/*    }*/
+
+/*    75% {*/
+/*        transform: scale(1.05) rotate(3deg);*/
+/*    }*/
+
+/*    90% {*/
+/*        transform: scale(0.98) rotate(-1deg);*/
+/*    }*/
+
+/*    100% {*/
+/*        transform: scale(1) rotate(0deg);*/
+/*    }*/
+/*}*/
+
+@keyframes cardDrop {
+    0% {
+        transform: scale(2.5) rotate(15deg);
+        opacity: 0;
+    }
+
+    55% {
+        transform: scale(0.95) rotate(-6deg);
+        opacity: 1;
+    }
+
+    /*70% {*/
+    /*    transform: scale(1.03) rotate(0.3deg);*/
+    /*}*/
+
+    /*82% {*/
+    /*    transform: scale(0.97) rotate(-0.3deg);*/
+    /*}*/
+
+    /*90% {*/
+    /*    transform: scale(1.0) rotate(0.1deg);*/
+    /*}*/
+
+    /*95% {*/
+    /*    transform: scale(0.997) rotate(-0.3deg);*/
+    /*}*/
+
+    100% {
+        transform: scale(1) rotate(0deg);
         opacity: 1;
     }
 }

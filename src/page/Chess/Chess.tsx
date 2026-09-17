@@ -81,6 +81,7 @@ const Chess = () => {
     const [chessComStats, setChessComStats] = useState<ChessStats | null>(null);
     const [lichessStats, setLichessStats] = useState<LichessStats | null>(null);
     const [chessComGames, setChessComGames] = useState<ChessGame[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchChessComData = async () => {
@@ -112,7 +113,9 @@ const Chess = () => {
 
         let mounted = true;
         (async () => {
+            setLoading(true);
             await Promise.all([fetchChessComData(), fetchLichessData()]);
+            setLoading(false);
         })();
 
         return () => {
@@ -194,12 +197,13 @@ const Chess = () => {
                     <p className="text-lg font-medium">so if im doing bad, its because im bad...</p>
                 </div>
 
-                <div className="w-full max-w-[1200px] mx-auto px-4 py-8">
-                    {/* Page navigation */}
-                    <div className="flex justify-center gap-2 mb-8">
-                        <button
-                            className={`px-5 py-2.5 rounded-lg font-medium transition-all duration-300 ${
-                                currentPage === "chesscom"
+                {!loading && (
+                    <div className="w-full max-w-[1200px] p-8 bg-[#73946B] rounded-xl border-2 border-[#4A7053]">
+                        {/* Page navigation */}
+                        <div className="flex justify-center gap-2 mb-8">
+                            <button
+                                className={`px-5 py-2.5 rounded-lg font-medium transition-all duration-300 ${
+                                    currentPage === "chesscom"
                                     ? "bg-white text-black shadow-lg"
                                     : "bg-white/10 text-white hover:bg-white/20"
                             }`}
@@ -655,7 +659,12 @@ const Chess = () => {
                             )}
                         </div>
                     )}
-                </div>
+                </div>)}
+                {loading && (
+                    <div className="flex justify-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                    </div>
+                )}
             </div>
         </div>
     )

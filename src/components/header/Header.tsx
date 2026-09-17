@@ -18,7 +18,7 @@ const Header = () : React.ReactNode => {
     return (
         <>
             <header className="border-b-2 border-white">
-                <ul className="flex flex-row gap-1 pl-72">
+                <ul className="flex flex-row gap-1 px-[18%]"> {/*pl-72*/}
                     <li className="p-1">
                         <Link href="/" className="text-[#D2D0A0] font-semibold text-xl pr-2">James Price</Link>
                     </li>
