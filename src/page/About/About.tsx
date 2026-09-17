@@ -15,9 +15,9 @@ const About = () => {
                     <div className="w-[80%] flex flex-col gap-4 pl-20 p-8">
                         <h1 className="text-3xl font-bold">James Price</h1>
                         <h3 className="text-lg font-semibold">Software Developer</h3>
-                        <p>After finishing my Computer Science degree in Winchester, I Began my professional career at Mediaferry (EKCS)</p>
+                        <p>After finishing my Computer Science degree in Winchester, I began my professional career at Mediaferry (EKCS)</p>
                         <p>I have a passion for technology and enjoy exploring new programming languages and frameworks.</p>
-                        <p> my free time, I like to work on personal projects, contribute to open-source, and share my knowledge with others through tutorials and blog posts.</p>
+                        <p>In my free time, I like to work on personal projects, contribute to open-source, and share my knowledge with others through tutorials and blog posts.</p>
                     </div>
                 </div>
                 <div className="flex flex-col gap-4 justify-center items-center bg-[#73946B] rounded-xl h-80 mx-4">
