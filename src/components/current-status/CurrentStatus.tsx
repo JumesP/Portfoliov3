@@ -12,7 +12,7 @@ const CurrentStatus = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setDate(new Date());
-        }, 1000);
+        }, 60000);
 
         return () => clearInterval(interval);
     }, []);
@@ -60,34 +60,136 @@ const CurrentStatus = () => {
         console.log(isWeekday);
 
         if (isSleepingHours) {
-            return "sleeping";
+            return "Sleeping";
         }
 
         if (isWeekday && isWorkingHours) {
-            return "working";
+            return "Working";
         }
 
         if (isWeekday && isRelaxingHours) {
-            return "relaxing";
+            return "Relaxing";
         }
 
         if (isWeekday && isRunningHours) {
-            return "running";
+            return "Running";
         }
 
-        return "coding";
+        return "Coding";
     }
 
 
 
     return (
-        <div className="flex flex-col items-center gap-4 w-[500px] h-fit p-4 m-4 border-2 bg-[#73946B] rounded-2xl">
-            <h3>Current Status:</h3>
-            <div className="flex flex-col gap-4 items-center border-2 p-2"> {/*// current time in timezone*/}
-                <p>{time}</p><p>{currentDate}</p><p>{weekDay}</p>
+        <div className="
+            relative w-[500px] m-4 p-6
+            overflow-hidden
+            rounded-3xl
+            border border-white/20
+            bg-gradient-to-br from-[#73946B] via-[#65865e] to-[#4f7049]
+            shadow-[0_20px_50px_-15px_rgba(0,0,0,0.4)]
+            text-white
+        ">
+            {/* Decorative glow */}
+            <div className="
+                absolute -top-16 -right-16
+                w-40 h-40
+                rounded-full
+                bg-white/10
+                blur-3xl
+            " />
+
+            {/* Header */}
+            <div className="relative flex items-center justify-between mb-6">
+                <div>
+                    <p className="text-xs uppercase tracking-[0.25em] text-white/60">
+                        Live Status
+                    </p>
+
+                    <h3 className="text-2xl font-semibold tracking-tight">
+                        Current Status
+                    </h3>
+                </div>
+
+                {/* Online indicator */}
+                <div className="
+                    flex items-center gap-2
+                    px-3 py-1.5
+                    rounded-full
+                    bg-black/10
+                    border border-white/10
+                    backdrop-blur-sm
+                ">
+                    <span className="
+                        w-2 h-2
+                        rounded-full
+                        bg-green-300
+                        shadow-[0_0_10px_rgba(134,239,172,0.9)]
+                        animate-pulse
+                    " />
+
+                        <span className="text-xs font-medium text-white/80">
+                        LIVE
+                    </span>
+                </div>
             </div>
-            <div>{/*what im currently doing... work, sleep, maybe current discord status or spotify song?*/}
-                {status}
+
+            {/* Time */}
+            <div className="
+                relative
+                flex items-center justify-between
+                p-4
+                rounded-2xl
+                bg-black/10
+                border border-white/10
+                backdrop-blur-sm
+            ">
+                    <div>
+                        <p className="text-xs uppercase tracking-widest text-white/50">
+                            Local Time
+                        </p>
+
+                        <p className="mt-1 text-3xl font-bold tracking-tight">
+                            {Number(time.split(":")[0])}:{Number(time.split(":")[1])}
+                        </p>
+                    </div>
+
+                    <div className="text-right">
+                        <p className="text-xs uppercase tracking-widest text-white/50">
+                            Day
+                        </p>
+
+                        <p className="mt-1 font-medium text-white/90">
+                            {weekDay}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Current activity */}
+                <div className="
+            relative mt-4
+            p-4
+            rounded-2xl
+            bg-white/10
+            border border-white/10
+            backdrop-blur-sm
+        ">
+                <p className="text-xs uppercase tracking-widest text-white/50">
+                    Currently
+                </p>
+
+                <div className="flex items-center gap-3 mt-2">
+                    <span className="text-2xl">💻</span>
+
+                    <p className="text-lg font-medium">
+                        {status}
+                    </p>
+                </div>
+            </div>
+
+            <div className="relative flex items-center gap-2 mt-5 text-xs text-white/40">
+                <span className="w-1 h-1 rounded-full bg-white/40" />
+                Automatically updated
             </div>
         </div>
     )

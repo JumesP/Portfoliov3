@@ -22,20 +22,20 @@ const Technologies = () => {
 
     // Sample tech stack data with reliable icon URLs
     const techStack: techStack[] = [
-        { name: 'JavaScript', category: 'frontend', level: 90, experience: '2 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg', isLanguage: true },
-        { name: 'React', category: 'frontend', level: 85, experience: '1,5 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg', isLanguage: false },
-        { name: 'HTML/CSS', category: 'frontend', level: 95, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg', isLanguage: false },
-        { name: 'Tailwind CSS', category: 'frontend', level: 70, experience: '1 year', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-original.svg', isLanguage: false },
-        { name: 'Python', category: 'backend', level: 65, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg', isLanguage: true },
-        { name: 'MongoDB', category: 'database', level: 70, experience: '2 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg', isLanguage: false },
-        { name: 'SQL', category: 'database', level: 80, experience: '2 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg', isLanguage: false },
+        { name: 'JavaScript', category: 'frontend', level: 90, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg', isLanguage: true },
+        { name: 'React', category: 'frontend', level: 85, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg', isLanguage: false },
+        { name: 'HTML/CSS', category: 'frontend', level: 95, experience: '4 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg', isLanguage: false },
+        { name: 'Tailwind CSS', category: 'frontend', level: 70, experience: '2 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-original.svg', isLanguage: false },
+        { name: 'Python', category: 'backend', level: 65, experience: '4 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg', isLanguage: true },
+        { name: 'MongoDB', category: 'database', level: 70, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg', isLanguage: false },
+        { name: 'SQL', category: 'database', level: 80, experience: '3.5 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg', isLanguage: false },
         // { name: 'Docker', category: 'devops', level: 60, experience: '2 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg', isLanguage: false },
         { name: 'Azure', category: 'devops', level: 65, experience: '0.5 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg', isLanguage: false },
         { name: 'AWS', category: 'devops', level: 85, experience: '1 year', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg', isLanguage: false },
-        { name: 'Git', category: 'tools', level: 75, experience: '2.5 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg', isLanguage: false },
-        { name: 'TypeScript', category: 'frontend', level: 65, experience: '1 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg', isLanguage: true },
-        { name: 'Node.js', category: 'backend', level: 80, experience: '2 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg', isLanguage: false },
-        { name: 'Express', category: 'backend', level: 75, experience: '2 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg', isLanguage: false },
+        { name: 'Git', category: 'tools', level: 75, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg', isLanguage: false },
+        { name: 'TypeScript', category: 'frontend', level: 65, experience: '1.5 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg', isLanguage: true },
+        { name: 'Node.js', category: 'backend', level: 80, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg', isLanguage: false },
+        { name: 'Express', category: 'backend', level: 75, experience: '3 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg', isLanguage: false },
         { name: 'Figma', category: 'design', level: 50, experience: '1.5 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg', isLanguage: false },
         { name: 'Java', category: 'backend', level: 65, experience: '1.5 years', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg', isLanguage: true },
         { name: 'C#', category: 'backend', level: 60, experience: '1 year', icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg', isLanguage: true },
@@ -83,8 +83,9 @@ const Technologies = () => {
                     <div className="flex flex-row flex-wrap gap-4 justify-center">
                         {techStack
                             .filter(tech => filter !== "all" ? tech.category === filter : true)
+                            .sort((a, b) => filter !== "all" ? b.level - a.level : 0)
                             .map(tech => (
-                                <div key={tech.name} className="flex flex-col gap-5 border-2 p-4 rounded-lg shadow-md group w-56 h-56">
+                                <div key={tech.name} className={`flex flex-col gap-5 border-2 p-4 rounded-lg shadow-md group w-56 h-56 ${tech.isLanguage ? 'bg-green-80/25' : 'bg-green-900/25'}`}>
                                     <div className="flex flex-row gap-2 items-center">
                                         <img src={tech.icon} alt={tech.name} className={`w-16 h-16 ${imageTransitionPopAndRotate}`} />
                                         <h3 className="text-lg font-bold pl-1 h-fit">{tech.name}</h3>
