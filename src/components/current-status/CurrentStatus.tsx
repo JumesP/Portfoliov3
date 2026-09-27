@@ -49,6 +49,7 @@ const CurrentStatus = () => {
     });
 
     const hour = Number(time.split(":")[0]);
+    const displayTime = time.split(":").slice(0, 2).join(":");
 
     const currentStatus = () => {
         const isWeekday = weekdays.includes(weekDay.toLowerCase());
@@ -164,7 +165,7 @@ const CurrentStatus = () => {
                     </p>
 
                     <p className="mt-1 text-3xl font-bold tracking-tight">
-                        {Number(time.split(":")[0])}:{Number(time.split(":")[1])}
+                        {displayTime}
                     </p>
                 </div>
 
