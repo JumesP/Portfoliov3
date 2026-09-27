@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 
@@ -10,6 +11,8 @@ const menuItems = [
     { menuName: "Projects", link: "/projects" },
     { menuName: "Technologies", link: "/technologies" },
     { menuName: "Chess", link: "/chess" },
+    { menuName: "Running", link: "/running" },
+    { menuName: "Eat", link: "/eat" }
 ]
 
 const Header = () : React.ReactNode => {
