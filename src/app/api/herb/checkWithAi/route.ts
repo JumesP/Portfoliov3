@@ -14,9 +14,13 @@ export async function POST(request: NextRequest) {
     }
 
     const API = `${config.callAi}`;
+    const payload = {
+        "model": "micro",
+        prompt: `Can a hamster eat ${foodName}? Answer with strict JSON only, no other text: {"food": string, "canEat": boolean, "amount": string, "frequency": string, "reason": string}`
+    }
 
     try {
-        const response = await axios.post(API, { foodName });
+        const response = await axios.post(API, payload);
         console.log("Response from AI check:", response.data);
         return NextResponse.json(response.data);
     } catch (error) {
