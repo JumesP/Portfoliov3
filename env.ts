@@ -7,8 +7,7 @@ interface RouteConfig {
 
 // Reads a required env var and throws immediately if it's missing,
 // instead of silently falling back to "" or undefined.
-function requireEnv(key: string): string {
-    const value = process.env[key];
+function requireEnv(key: string, value: string | undefined): string {
     if (!value) {
         throw new Error(`Missing required environment variable: ${key}`);
     }
@@ -27,11 +26,41 @@ function loadConfig(): RouteConfig {
         );
     }
 
-    const prefix = instanceRaw.toUpperCase(); // PRODUCTION | STAGING | DEVELOPMENT
+    if (instanceRaw === "production") {
+        return {
+            contactMe: requireEnv(
+                "NEXT_PUBLIC_PRODUCTION_CONTACT_ME_URL",
+                process.env.NEXT_PUBLIC_PRODUCTION_CONTACT_ME_URL
+            ),
+            callAi: requireEnv(
+                "NEXT_PUBLIC_PRODUCTION_CALL_AI_URL",
+                process.env.NEXT_PUBLIC_PRODUCTION_CALL_AI_URL
+            ),
+        };
+    }
+
+    if (instanceRaw === "staging") {
+        return {
+            contactMe: requireEnv(
+                "NEXT_PUBLIC_STAGING_CONTACT_ME_URL",
+                process.env.NEXT_PUBLIC_STAGING_CONTACT_ME_URL
+            ),
+            callAi: requireEnv(
+                "NEXT_PUBLIC_STAGING_CALL_AI_URL",
+                process.env.NEXT_PUBLIC_STAGING_CALL_AI_URL
+            ),
+        };
+    }
 
     return {
-        contactMe: requireEnv(`NEXT_PUBLIC_${prefix}_CONTACT_ME_URL`),
-        callAi: requireEnv(`NEXT_PUBLIC_${prefix}_CALL_AI_URL`),
+        contactMe: requireEnv(
+            "NEXT_PUBLIC_DEVELOPMENT_CONTACT_ME_URL",
+            process.env.NEXT_PUBLIC_DEVELOPMENT_CONTACT_ME_URL
+        ),
+        callAi: requireEnv(
+            "NEXT_PUBLIC_DEVELOPMENT_CALL_AI_URL",
+            process.env.NEXT_PUBLIC_DEVELOPMENT_CALL_AI_URL
+        ),
     };
 }
 
