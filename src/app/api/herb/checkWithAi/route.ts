@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { config } from "@/config"
+import { config } from "@/env"
 
 /**
  * Stores contact information to DynamoDB
