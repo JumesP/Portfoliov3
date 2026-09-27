@@ -3,6 +3,7 @@ type SupportedInstance = "production" | "staging" | "development";
 interface RouteConfig {
     contactMe: string; // standAlone-contactMe
     callAi: string;    // standAlone-callAI
+    EatDB: string;     // standAlone-DB-canHerbEatIt
 }
 
 // Reads a required env var and throws immediately if it's missing,
@@ -36,6 +37,10 @@ function loadConfig(): RouteConfig {
                 "NEXT_PUBLIC_PRODUCTION_CALL_AI_URL",
                 process.env.NEXT_PUBLIC_PRODUCTION_CALL_AI_URL
             ),
+            EatDB: requireEnv(
+                "NEXT_PUBLIC_PRODUCTION_DB_EAT_URL",
+                process.env.NEXT_PUBLIC_PRODUCTION_DB_EAT_URL
+            ),
         };
     }
 
@@ -49,6 +54,10 @@ function loadConfig(): RouteConfig {
                 "NEXT_PUBLIC_STAGING_CALL_AI_URL",
                 process.env.NEXT_PUBLIC_STAGING_CALL_AI_URL
             ),
+            EatDB: requireEnv(
+                "NEXT_PUBLIC_STAGING_DB_EAT_URL",
+                process.env.NEXT_PUBLIC_STAGING_DB_EAT_URL
+            ),
         };
     }
 
@@ -60,6 +69,10 @@ function loadConfig(): RouteConfig {
         callAi: requireEnv(
             "NEXT_PUBLIC_DEVELOPMENT_CALL_AI_URL",
             process.env.NEXT_PUBLIC_DEVELOPMENT_CALL_AI_URL
+        ),
+        EatDB: requireEnv(
+            "NEXT_PUBLIC_DEVELOPMENT_DB_EAT_URL",
+            process.env.NEXT_PUBLIC_DEVELOPMENT_DB_EAT_URL
         ),
     };
 }
