@@ -75,6 +75,20 @@ const CurrentStatus = () => {
             return "Running";
         }
 
+        // weekend
+
+        if (!isWeekday && isWorkingHours) {
+            return "Enjoying the weekend";
+        }
+
+        if (!isWeekday && isRelaxingHours) {
+            return "Relaxing";
+        }
+
+        if (!isWeekday && isRunningHours) {
+            return "Running";
+        }
+
         return "Coding";
     }
 
@@ -82,11 +96,11 @@ const CurrentStatus = () => {
 
     return (
         <div className="
-            relative w-[500px] m-4 p-6
+            relative w-125 m-4 p-6
             overflow-hidden
             rounded-3xl
             border border-white/20
-            bg-gradient-to-br from-[#73946B] via-[#65865e] to-[#4f7049]
+            bg-linear-to-br from-[#73946B] via-[#65865e] to-[#4f7049]
             shadow-[0_20px_50px_-15px_rgba(0,0,0,0.4)]
             text-white
         ">
@@ -144,36 +158,36 @@ const CurrentStatus = () => {
                 border border-white/10
                 backdrop-blur-sm
             ">
-                    <div>
-                        <p className="text-xs uppercase tracking-widest text-white/50">
-                            Local Time
-                        </p>
+                <div>
+                    <p className="text-xs uppercase tracking-widest text-white/50">
+                        Local Time
+                    </p>
 
-                        <p className="mt-1 text-3xl font-bold tracking-tight">
-                            {Number(time.split(":")[0])}:{Number(time.split(":")[1])}
-                        </p>
-                    </div>
-
-                    <div className="text-right">
-                        <p className="text-xs uppercase tracking-widest text-white/50">
-                            Day
-                        </p>
-
-                        <p className="mt-1 font-medium text-white/90">
-                            {weekDay}
-                        </p>
-                    </div>
+                    <p className="mt-1 text-3xl font-bold tracking-tight">
+                        {Number(time.split(":")[0])}:{Number(time.split(":")[1])}
+                    </p>
                 </div>
 
-                {/* Current activity */}
-                <div className="
-            relative mt-4
-            p-4
-            rounded-2xl
-            bg-white/10
-            border border-white/10
-            backdrop-blur-sm
-        ">
+                <div className="text-right">
+                    <p className="text-xs uppercase tracking-widest text-white/50">
+                        Day
+                    </p>
+
+                    <p className="mt-1 font-medium text-white/90">
+                        {weekDay}
+                    </p>
+                </div>
+            </div>
+
+            {/* Current activity */}
+            <div className="
+                relative mt-4
+                p-4
+                rounded-2xl
+                bg-white/10
+                border border-white/10
+                backdrop-blur-sm
+            ">
                 <p className="text-xs uppercase tracking-widest text-white/50">
                     Currently
                 </p>
