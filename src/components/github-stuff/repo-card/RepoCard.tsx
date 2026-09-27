@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
 import repoImages from '../../../data/repo-images.json';
+import { Repository } from '@/src/types/githubRepos/githubRepos';
 
 interface RepoCardProps {
-    repo: {
-        name: string;
-        description: string;
-        language: string;
-        stargazers_count: number;
-        forks_count: number;
-        watchers_count: number;
-        open_issues_count: number;
-        size: number;
-        updated_at: string;
-    };
+    repo: Repository;
 }
 
 const RepoCard = ({ repo }: RepoCardProps) => {
     const [showModal, setShowModal] = useState(false);
 
     // Helper function to get image URL for a repository
-    const getRepoImage = (repoName) => {
-        return repoImages[repoName] || null;
+    const getRepoImage = (repoName: string) => {
+        return (repoImages as Record<string, string>)[repoName] || null;
     };
 
-    const formatDate = (dateString) => {
+    const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
             year: 'numeric',
@@ -32,8 +23,8 @@ const RepoCard = ({ repo }: RepoCardProps) => {
         });
     };
 
-    const getLanguageColor = (language) => {
-        const colors = {
+    const getLanguageColor = (language: string) => {
+        const colors: Record<string, string> = {
             JavaScript: '#f7df1e',
             TypeScript: '#3178c6',
             HTML: '#e34c26',

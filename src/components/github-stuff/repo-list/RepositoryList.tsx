@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RepoCard from '../repo-card/RepoCard';
+import { Repository } from '@/src/types/githubRepos/githubRepos';
 
 interface RepositoryListProps {
     githubUsername: string;
@@ -7,10 +8,10 @@ interface RepositoryListProps {
 }
 
 const RepositoryList = ({ githubUsername, githubToken }: RepositoryListProps) => {
-    const [repos, setRepos] = useState<any[]>([]);
-    const [filteredRepos, setFilteredRepos] = useState<any[]>([]);
+    const [repos, setRepos] = useState<Repository[]>([]);
+    const [filteredRepos, setFilteredRepos] = useState<Repository[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         const fetchRepositories = async () => {
             if (!githubUsername) {
@@ -21,7 +22,7 @@ const RepositoryList = ({ githubUsername, githubToken }: RepositoryListProps) =>
 
             try {
                 // Prepare headers with token if available
-                const headers = {};
+                const headers: HeadersInit = {};
                 if (githubToken) {
                     headers.Authorization = `token ${githubToken}`;
                 }
@@ -32,10 +33,10 @@ const RepositoryList = ({ githubUsername, githubToken }: RepositoryListProps) =>
                     throw new Error(`Failed to fetch repositories (${response.status})`);
                 }
 
-                const data = await response.json();
+                const data: Repository[] = await response.json();
 
                 // Filter out forks if needed
-                const nonForkedRepos = data.filter(repo => !repo.fork);
+                const nonForkedRepos = data.filter((repo: Repository) => !repo.fork);
 
                 // Extract unique languages for filters
                 const languages = [...new Set(nonForkedRepos.map(repo => repo.language).filter(Boolean))];
@@ -44,7 +45,7 @@ const RepositoryList = ({ githubUsername, githubToken }: RepositoryListProps) =>
                 setFilteredRepos(nonForkedRepos);
                 setLoading(false);
             } catch (err) {
-                setError(err.message);
+                setError(err instanceof Error ? err.message : 'An unknown error occurred');
                 setLoading(false);
             }
         };
