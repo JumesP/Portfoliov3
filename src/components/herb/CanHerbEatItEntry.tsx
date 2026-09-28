@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { hamsterSafeFoods, hamsterUnsafeFoods } from "@/src/data/can-herb-eat-it/food-data";
 import { spellCheckHamsterFood } from "@/src/libs/spellcheck";
 
@@ -13,11 +13,17 @@ type FoodCheckResult = {
   reason?: string;
 };
 
+type PreviousGuess = {
+    name: string;
+    isSafe: boolean;
+};
+
 const CanHerbEatItEntry = () => {
     const [foodInput, setFoodInput] = useState("");
     const [result, setResult] = useState<FoodCheckResult | null>(null);
     const [checkingWithAI, setCheckingWithAI] = useState(false);
-    const [guessTotal, setGuessTotal] = useState(null);
+    const [guessTotal, setGuessTotal] = useState<number | null>(null);
+    const [previousGuesses, setPreviousGuesses] = useState<PreviousGuess[]>([]);
 
     const getResultColor = (result: FoodCheckResult | null) => {
         if (!result) return "bg-gray-100 border-gray-500";
@@ -174,12 +180,30 @@ const CanHerbEatItEntry = () => {
             return;
         }
 
+        setFoodInput("");
+
         // do greater validation, such as:
         // ensure no numbers, special characters, or empty strings
         // i want as little calls to ai as possible, so i want to ensure that the input is valid before sending it to ai
 
         // spell check
         normalizedFood = spellCheckFood(normalizedFood);
+
+        const alreadyGuessed = previousGuesses.some(
+            (guess) => guess.name.toLowerCase() === normalizedFood.toLowerCase()
+        );
+
+        if (alreadyGuessed) {
+            console.log(`${normalizedFood} has already been guessed.`);
+            return;
+        }
+
+        const recordGuess = (foodResult: FoodCheckResult) => {
+            setPreviousGuesses((guesses) => [
+                ...guesses,
+                { name: foodResult.name, isSafe: foodResult.isSafe },
+            ]);
+        };
 
         const isInExampleSafeList = HAMSTER_SAFE_FOODS.includes(normalizedFood.toLowerCase());
         const isInExampleUnsafeList = HAMSTER_UNSAFE_FOODS.includes(normalizedFood.toLowerCase());
@@ -200,6 +224,7 @@ const CanHerbEatItEntry = () => {
                 reason: "matched safe list"
             };
             setResult(result);
+            recordGuess(result);
             incrementFoodInput(result, normalizedFood);
             return;
         }
@@ -221,6 +246,7 @@ const CanHerbEatItEntry = () => {
                 reason: "matched unsafe list"
             };
             setResult(result);
+            recordGuess(result);
             incrementFoodInput(result, normalizedFood);
             return
         }
@@ -232,6 +258,13 @@ const CanHerbEatItEntry = () => {
         if (isInDatabase) {
             console.log(`${normalizedFood} is in the database. Checking if it's safe...`);
             setResult({
+                isSafe: DBResult.isSafe,
+                name: DBResult.name,
+                amount: DBResult.amount || "unknown",
+                frequency: DBResult.frequency || "unknown",
+                reason: DBResult.reason || "fetched from database",
+            });
+            recordGuess({
                 isSafe: DBResult.isSafe,
                 name: DBResult.name,
                 amount: DBResult.amount || "unknown",
@@ -250,6 +283,13 @@ const CanHerbEatItEntry = () => {
             const normalizedAIResult = normalizeAIResult(AIResult, normalizedFood);
             console.log(`${normalizedFood} is not in the database. Checking with AI...`);
             setResult({
+                isSafe: normalizedAIResult?.isSafe || false,
+                name: normalizedFood,
+                amount: normalizedAIResult?.amount || "unknown",
+                frequency: normalizedAIResult?.frequency || "unknown",
+                reason: normalizedAIResult?.reason || "checked with AI",
+            });
+            recordGuess({
                 isSafe: normalizedAIResult?.isSafe || false,
                 name: normalizedFood,
                 amount: normalizedAIResult?.amount || "unknown",
@@ -298,6 +338,48 @@ const CanHerbEatItEntry = () => {
                 {checkingWithAI && (
                     <div className="flex flex-col gap-2 align-items justify-center text-center border-2 rounded-md p-4 bg-yellow-100 border-yellow-500">
                         <p>Checking with AI...</p>
+                    </div>
+                )}
+                {previousGuesses.length > 0 && (
+                    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <table className="w-full border-collapse border border-green-300 text-left">
+                            <thead className="bg-green-100">
+                                <tr>
+                                    <th className="border border-green-300 p-2">She can eat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {previousGuesses.filter((guess) => guess.isSafe).map((guess) => (
+                                    <tr key={guess.name}>
+                                        <td className="border border-green-300 p-2">{guess.name}</td>
+                                    </tr>
+                                ))}
+                                {!previousGuesses.some((guess) => guess.isSafe) && (
+                                    <tr>
+                                        <td className="border border-green-300 p-2 text-gray-500">No guesses yet</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                        <table className="w-full border-collapse border border-red-300 text-left">
+                            <thead className="bg-red-100">
+                                <tr>
+                                    <th className="border border-red-300 p-2">She cannot eat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {previousGuesses.filter((guess) => !guess.isSafe).map((guess) => (
+                                    <tr key={guess.name}>
+                                        <td className="border border-red-300 p-2">{guess.name}</td>
+                                    </tr>
+                                ))}
+                                {!previousGuesses.some((guess) => !guess.isSafe) && (
+                                    <tr>
+                                        <td className="border border-red-300 p-2 text-gray-500">No guesses yet</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 )}
             </div>
