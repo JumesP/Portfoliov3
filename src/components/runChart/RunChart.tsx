@@ -135,12 +135,17 @@ const RunLineChart = () => {
 
 const RunChart = () => {
   return (
-    <div className="flex items-start gap-8">
-      <div className="flex-1 basis-[400px] min-w-0">
+    <div className="flex items-start gap-8 w-[1200px]">
+      <div className="flex-1 basis-[400px] min-w-0 border-2 border-gray-200 rounded-lg p-4 bg-gray-200">
         <RunTable />
       </div>
-      <div className="flex-1 basis-[400px] min-w-0">
-        <RunLineChart />
+
+      <div className="flex-1 basis-[400px] min-w-0  h-full">
+        <div className="border-2 border-gray-200 rounded-lg p-4 bg-gray-200">
+          <RunLineChart />
+        </div>
+        <p className="text-lg pt-8 text-center">My end of year goal is to reach a 5km time of 25 minutes.</p>
+        <p className="text-md pt-2 text-center">Requiring a pace of 5:00 per km.</p>
       </div>
     </div>
   );
