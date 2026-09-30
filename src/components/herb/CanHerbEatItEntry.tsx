@@ -24,6 +24,7 @@ const CanHerbEatItEntry = () => {
     const [checkingWithAI, setCheckingWithAI] = useState(false);
     const [guessTotal, setGuessTotal] = useState<number | null>(null);
     const [previousGuesses, setPreviousGuesses] = useState<PreviousGuess[]>([]);
+    const [invalidWordErrorMessage, setInvalidWordErrorMessage] = useState<boolean>(false);
 
     const getResultColor = (result: FoodCheckResult | null) => {
         if (!result) return "bg-gray-100 border-gray-500";
@@ -174,6 +175,7 @@ const CanHerbEatItEntry = () => {
 
     const handleCheckFood = async (foodEntered: string) => {
         setGuessTotal(null);
+        setInvalidWordErrorMessage(false);
         let normalizedFood = validateFoodInput(foodEntered);
 
         if (!normalizedFood) {
@@ -275,13 +277,22 @@ const CanHerbEatItEntry = () => {
             return;
         }
 
+        // use ai to check if its a real word.
+
+        const isRealWord = true; // new function
+
+        if (!isRealWord) {
+            setInvalidWordErrorMessage(true);
+            return;
+        }
+
         console.log("CHECKPOINT 2")
         const { AIResult } = await checkWithAi(normalizedFood);
 
 
         if (AIResult) {
             const normalizedAIResult = normalizeAIResult(AIResult, normalizedFood);
-            console.log(`${normalizedFood} is not in the database. Checking with AI...`);
+            console.log(`${normalizedFood} is not in the database. Checking with AI...`)
             setResult({
                 isSafe: normalizedAIResult?.isSafe || false,
                 name: normalizedFood,
@@ -338,6 +349,11 @@ const CanHerbEatItEntry = () => {
                 {checkingWithAI && (
                     <div className="flex flex-col gap-2 align-items justify-center text-center border-2 rounded-md p-4 bg-yellow-100 border-yellow-500">
                         <p>Checking with AI...</p>
+                    </div>
+                )}
+                {invalidWordErrorMessage && (
+                    <div className="flex flex-col gap-2 align-items justify-center text-center border-2 rounded-md p-4 bg-yellow-100 border-yellow-500">
+                        <p>That guess is not a real word.</p>
                     </div>
                 )}
                 {previousGuesses.length > 0 && (
