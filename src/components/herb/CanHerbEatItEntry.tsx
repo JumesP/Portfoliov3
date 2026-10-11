@@ -5,6 +5,13 @@ import { spellCheckHamsterFood } from "@/src/libs/spellcheck";
 const HAMSTER_SAFE_FOODS = hamsterSafeFoods.map((food) => food.name.toLowerCase());
 const HAMSTER_UNSAFE_FOODS = hamsterUnsafeFoods.map((food) => food.name.toLowerCase());
 
+// add amount of times guessed to the page
+
+type ValidObjectResult = {
+    isValidObject: boolean;
+    reason: string;
+}
+
 type FoodCheckResult = {
   isSafe: boolean;
   name: string;
@@ -25,6 +32,7 @@ const CanHerbEatItEntry = () => {
     const [guessTotal, setGuessTotal] = useState<number | null>(null);
     const [previousGuesses, setPreviousGuesses] = useState<PreviousGuess[]>([]);
     const [invalidWordErrorMessage, setInvalidWordErrorMessage] = useState<boolean>(false);
+    const [thatFoodWasGuessed, setThatFoodWasGuessed] = useState<number>(0);
 
     const getResultColor = (result: FoodCheckResult | null) => {
         if (!result) return "bg-gray-100 border-gray-500";
@@ -36,6 +44,10 @@ const CanHerbEatItEntry = () => {
 
     const validateFoodInput = (foodName: string) => {
         const normalizedFood = foodName.trim();
+
+        // do greater validation, such as:
+        // ensure no numbers, special characters, or empty strings
+        // i want as little calls to ai as possible, so i want to ensure that the input is valid before sending it to ai
 
         if (!normalizedFood) {
             console.log("Please enter a food item.");
@@ -64,6 +76,38 @@ const CanHerbEatItEntry = () => {
         }
 
         return foodName;
+    };
+
+    const RealObjectCheckWithAi = async (foodName: string) => {
+        setCheckingWithAI(true);
+        console.log(`Sending ${foodName} to AI for checking...`);
+
+        try {
+            const response = await fetch("/api/herb/RealObjectCheckWithAi", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ foodName }),
+            });
+
+            console.log("AI Response Status inoew:", response.status, response.statusText);
+            console.log("AI Response Status inoew:", response);
+
+            if (!response.ok) {
+                throw new Error(`Error checking with AI: ${response.statusText}`);
+            }
+
+            const data: ValidObjectResult = await response.json();
+            console.log("AI Response:", data);
+
+            return { isValidObject: data.isValidObject, reason: data.reason };
+        } catch (error) {
+            console.error("Error checking with AI:", error);
+            return { isValidObject: null, reason: "Failed to check with AI" };
+        } finally {
+            setCheckingWithAI(false);
+        }
     };
 
     const checkWithAi = async (foodName: string) => {
@@ -183,10 +227,7 @@ const CanHerbEatItEntry = () => {
         }
 
         setFoodInput("");
-
-        // do greater validation, such as:
-        // ensure no numbers, special characters, or empty strings
-        // i want as little calls to ai as possible, so i want to ensure that the input is valid before sending it to ai
+        setThatFoodWasGuessed(0);
 
         // spell check
         normalizedFood = spellCheckFood(normalizedFood);
@@ -278,10 +319,12 @@ const CanHerbEatItEntry = () => {
         }
 
         // use ai to check if its a real word.
+        console.log(`${normalizedFood} is not in the database. Checking with AI if it's a real object...`);
+        const { isValidObject, reason } = await RealObjectCheckWithAi(normalizedFood);
 
-        const isRealWord = true; // new function
+        console.log("AI Valid Object Check Result:", { isValidObject, reason });
 
-        if (!isRealWord) {
+        if (!isValidObject) {
             setInvalidWordErrorMessage(true);
             return;
         }
