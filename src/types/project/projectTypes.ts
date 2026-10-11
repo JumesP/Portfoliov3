@@ -1,6 +1,7 @@
 export interface ProjectCard {
     name: string;
     image: string;
+    description: string;
     rotation: number;
 }
 
