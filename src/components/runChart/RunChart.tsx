@@ -20,6 +20,9 @@ const runs: Run[] = [
   { date: '05-09-2026', fiveKTime: 28.52 },
   { date: '12-09-2026', fiveKTime: 28.82 },
   { date: '19-09-2026', fiveKTime: 28.38 },
+  { date: '22-09-2026', fiveKTime: 27.12 },
+  { date: '03-10-2026', fiveKTime: 28.17 },
+  { date: '10-10-2026', fiveKTime: 27.35 },
 ];
 
 function parseDDMMYYYY(dateStr: string): Date {
