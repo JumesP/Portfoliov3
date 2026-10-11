@@ -195,7 +195,17 @@ const Chess = () => {
                     <p className="text-lg font-medium">In my free time, I love learning how to play Chess!</p>
                     <p className="text-lg font-medium">I like how every move is 100% skill and 0% luck based</p>
                     <p className="text-lg font-medium">so if im doing bad, its because im bad...</p>
+                    <button
+                        className="w-48 mt-16 px-5 py-2.5 rounded-lg font-medium bg-white text-black hover:bg-gray-200 transition-all duration-300"
+                        onClick={() => {
+                            window.open("https://www.chess.com/play/online/Proce1", "_blank", "noopener,noreferrer");
+                        }}
+                    >
+                        ♟️ Send me a game!
+                    </button>
                 </div>
+
+
 
                 {!loading && (
                     <div className="w-full max-w-[1200px] p-8 bg-[#73946B] rounded-xl border-2 border-[#4A7053]">
