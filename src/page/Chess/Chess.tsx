@@ -198,7 +198,7 @@ const Chess = () => {
                     <button
                         className="w-48 mt-16 px-5 py-2.5 rounded-lg font-medium bg-white text-black hover:bg-gray-200 transition-all duration-300"
                         onClick={() => {
-                            window.open("https://www.chess.com/play/online/Proce1", "_blank", "noopener,noreferrer");
+                            window.open("https://www.chess.com/play/Proce1", "_blank", "noopener,noreferrer");
                         }}
                     >
                         ♟️ Send me a game!
