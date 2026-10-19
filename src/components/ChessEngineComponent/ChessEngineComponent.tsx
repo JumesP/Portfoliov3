@@ -226,15 +226,17 @@ const ChessEngineComponent = () => {
 
     return (
         <div className="chess">
-			<div className="max-w-200 max-h-200 w-80%">
-				<Chessboard options={chessboardOptions} />
+			<div className="relative max-w-200 max-h-200 w-80% mb-20">
+                <Chessboard options={chessboardOptions} />
+                {chessGame.isGameOver() && (
+                    <div className="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-70 flex flex-col justify-center items-center text-white text-center">
+                        <h2 className="text-2xl font-bold">Game Over!</h2>
+                        <p className="text-xl font-medium">{chessGame.isCheckmate() ? 'Checkmate!' : chessGame.isStalemate() ? 'Stalemate!' : chessGame.isDraw() ? 'Draw!' : ''}</p>
+                        <p className="text-lg font-semibold">{chessGame.isCheckmate() ? (chessGame.turn() === 'w' ? 'Black wins!' : 'White wins!') : ''}</p>
+                    </div>
+                )}
 			</div>
-			{chessGame.isGameOver() && (
-				<div className="game-over">
-					<h2>Game Over!</h2>
-					<p>{chessGame.isCheckmate() ? 'Checkmate!' : chessGame.isStalemate() ? 'Stalemate!' : chessGame.isDraw() ? 'Draw!' : ''}</p>
-				</div>
-			)}
+
         </div>
     )
 
