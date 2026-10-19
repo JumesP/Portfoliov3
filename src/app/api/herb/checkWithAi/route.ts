@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        console.log("Response from AI check:", response.data);
         return NextResponse.json(response.data);
     } catch (error) {
         console.error("Error checking with ai:", error);
