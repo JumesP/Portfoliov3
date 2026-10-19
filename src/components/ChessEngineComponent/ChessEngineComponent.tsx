@@ -28,7 +28,6 @@ const ChessEngineComponent = () => {
             }
 
             const data = await response.json();
-            console.log("response:", data);
 
             return { data };
         } catch (error) {
@@ -40,7 +39,6 @@ const ChessEngineComponent = () => {
 	async function getCPUMove() {
 		// get the fen
 		const fen = chessGame.fen();
-		console.log("Current FEN:", fen);
 
 		// exit if the game is over
 		if (chessGame.isGameOver()) {
@@ -49,7 +47,6 @@ const ChessEngineComponent = () => {
 
 		// get all possible moves
 		const possibleMoves = chessGame.moves();
-		console.log("Possible moves:", possibleMoves);
 
 		const { data } = await getBestMove(fen);
 		if (!data || !data.move) {
@@ -62,17 +59,12 @@ const ChessEngineComponent = () => {
 		const PieceType = data.move.piece.type;
 		const PieceIsWhite = data.move.piece.isWhite;
 
-		console.log(toFile, toRank, PieceType);
-
 		const file = ["a", "b", "c", "d", "e", "f", "g", "h"][toFile];
 		const rank = ["1", "2", "3", "4", "5", "6", "7", "8"][toRank];
         const piece = PieceIsWhite ? ["", "n", "b", "r", "q", "k"][PieceType] : ["", "N", "B", "R", "Q", "K"][PieceType];
         const promotionPiece = PieceIsWhite ? ["", "n", "b", "r", "q", "k"][promotionType] : ["", "N", "B", "R", "Q", "K"][promotionType];
 
-		console.log("piece", piece);
-
 		let move = `${piece}${file}${rank}`;
-		console.log("Best move from AI:", move);
 
         // THIS WHOLE BLOCK CAN BE REMOVED WHEN IT RETURNS A LEGAL MOVE STRUCTURED CORRECTLY
 		if (!possibleMoves.includes(move)) {
@@ -100,7 +92,6 @@ const ChessEngineComponent = () => {
 
             // allow for promotion
             if (PieceType === 0 && (rank === "1" || rank === "8") && isPromotion) {
-                console.log("Promotion detected, looking for matching move with promotion piece:", promotionPiece);
                 matchingMove = possibleMoves.find(m => m.includes(file) && m.includes(rank) && m.includes(promotionPiece));
             }
 
@@ -235,7 +226,7 @@ const ChessEngineComponent = () => {
 
     return (
         <div className="chess">
-			<div className="h-200 w-200">
+			<div className="max-w-200 max-h-200 w-80%">
 				<Chessboard options={chessboardOptions} />
 			</div>
 			{chessGame.isGameOver() && (
