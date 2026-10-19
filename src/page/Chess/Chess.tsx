@@ -1,80 +1,6 @@
 "use client"
-import react, {useState, useEffect } from 'react';
-
-interface ChessRating {
-    rating: number;
-    rd?: number;
-    prog?: number;
-}
-
-interface ChessStats {
-    chess_daily?: {
-        last?: ChessRating;
-        best?: ChessRating;
-    };
-    chess_rapid?: {
-        last?: ChessRating;
-        best?: ChessRating;
-    };
-    tactics?: {
-        highest?: ChessRating;
-    };
-}
-
-interface ChessPlayer {
-    username: string;
-    rating: number;
-    result: string;
-}
-
-interface ChessGame {
-    end_time: number;
-    url: string;
-    time_class: string;
-    white: ChessPlayer;
-    black: ChessPlayer;
-}
-
-interface ChessGamesResponse {
-    games: ChessGame[];
-}
-
-interface ChessArchivesResponse {
-    archives: string[];
-}
-
-interface LichessPerformance {
-    games: number;
-    rating: number;
-    rd?: number;
-    prog?: number;
-}
-
-interface LichessCount {
-    all?: number;
-    win?: number;
-    loss?: number;
-    draw?: number;
-}
-
-interface LichessStats {
-    username: string;
-    count?: LichessCount;
-    perfs: {
-        bullet: LichessPerformance;
-        blitz: LichessPerformance;
-        rapid: LichessPerformance;
-        classical: LichessPerformance;
-        puzzle: LichessPerformance;
-    };
-}
-
-interface RapidHistoryEntry {
-    date: string;
-    rating: number;
-    year: number;
-    month: number;
-}
+import react, { useState, useEffect } from 'react';
+import { ChessRating, ChessStats, ChessGame, ChessPlayer, ChessGamesResponse, ChessArchivesResponse, LichessStats, LichessPerformance, LichessCount, RapidHistoryEntry } from './types';
 
 const Chess = () => {
     const [currentPage, setCurrentPage] = useState<"chesscom" | "lichess">("chesscom");
@@ -189,7 +115,7 @@ const Chess = () => {
 
     return (
         <div className="MainContent flex-1 flex flex-row justify-center w-full">
-            <div className="Content flex flex-col gap-20 mt-20 w-full max-w-[1200px]">
+            <div className="Content flex flex-col gap-20 mt-20 w-full max-w-300">
                 <div className="flex flex-col gap-2 justify-center items-center">
                     <h1 className="text-5xl font-bold mb-5">Chess!</h1>
                     <p className="text-lg font-medium">In my free time, I love learning how to play Chess!</p>
@@ -208,7 +134,7 @@ const Chess = () => {
 
 
                 {!loading && (
-                    <div className="w-full max-w-[1200px] p-8 bg-[#73946B] rounded-xl border-2 border-[#4A7053]">
+                    <div className="w-full max-w-300 p-8 bg-[#73946B] rounded-xl border-2 border-[#4A7053]">
                         {/* Page navigation */}
                         <div className="flex justify-center gap-2 mb-8">
                             <button
@@ -397,7 +323,7 @@ const Chess = () => {
                                     `}
                                                 >
                                                     {/* Result */}
-                                                    <div className="flex flex-col items-center min-w-[70px]">
+                                                    <div className="flex flex-col items-center min-w-17.5">
                                         <span className="text-xl">
                                             {resultEmoji}
                                         </span>
