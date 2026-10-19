@@ -3,6 +3,7 @@ type SupportedInstance = "production" | "staging" | "development";
 interface RouteConfig {
     contactMe: string; // standAlone-contactMe
     callAi: string;    // standAlone-callAI
+    getBestMove: string; // standAlone-getBestMove
     EatDB: string;     // standAlone-DB-canHerbEatIt
 }
 
@@ -41,6 +42,10 @@ function loadConfig(): RouteConfig {
                 "NEXT_PUBLIC_PRODUCTION_DB_EAT_URL",
                 process.env.NEXT_PUBLIC_PRODUCTION_DB_EAT_URL
             ),
+            getBestMove: requireEnv(
+                "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
+                process.env.NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL
+            ),
         };
     }
 
@@ -58,6 +63,10 @@ function loadConfig(): RouteConfig {
                 "NEXT_PUBLIC_STAGING_DB_EAT_URL",
                 process.env.NEXT_PUBLIC_STAGING_DB_EAT_URL
             ),
+            getBestMove: requireEnv(
+                "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
+                process.env.NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL
+            ),
         };
     }
 
@@ -73,6 +82,10 @@ function loadConfig(): RouteConfig {
         EatDB: requireEnv(
             "NEXT_PUBLIC_DEVELOPMENT_DB_EAT_URL",
             process.env.NEXT_PUBLIC_DEVELOPMENT_DB_EAT_URL
+        ),
+        getBestMove: requireEnv(
+            "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
+            process.env.NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL
         ),
     };
 }
