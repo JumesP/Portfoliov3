@@ -12,7 +12,8 @@ const menuItems = [
     { menuName: "Technologies", link: "/technologies" },
     { menuName: "Chess", link: "/chess" },
     { menuName: "Running", link: "/running" },
-    { menuName: "Eat", link: "/eat" }
+    { menuName: "Eat", link: "/eat" },
+    { menuName: "Chess Engine", link: "/chess-engine" },
 ]
 
 const Header = () : React.ReactNode => {
