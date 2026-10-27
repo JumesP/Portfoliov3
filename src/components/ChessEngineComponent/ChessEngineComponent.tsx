@@ -1,7 +1,21 @@
 "use client";
-import { useState, type CSSProperties } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { Chessboard, SquareHandlerArgs } from "react-chessboard";
 import { Chess as ChessGame, Move, Square } from "chess.js";
+
+type LeaderboardEntry = {
+  username: string;
+  gameHistory: [];
+  checkmatingPiece: string;
+  palyerColor: string;
+  leaderboard: "global";
+  playersMoves: number;
+  totalMoves: number;
+  finalFen: string;
+  startingFen: string;
+  chessGameId: string;
+};
+
 
 const pieceSymbols: Record<
   Move["color"],
@@ -37,13 +51,98 @@ const capturedPieceOrder: Record<NonNullable<Move["captured"]>, number> = {
 const ChessEngineComponent = () => {
   // Keep one mutable game instance while state updates redraw the board and history.
   const [chessGame] = useState(() => new ChessGame());
+  const [fen, setFen] = useState(() => chessGame.fen())
 
   // track the current position of the chess game in state to trigger a re-render of the chessboard
   const [chessPosition, setChessPosition] = useState(chessGame.fen());
+  const [playersColor, setPlayersColor] = useState("w")
   const [moveFrom, setMoveFrom] = useState("");
   const [optionSquares, setOptionSquares] = useState<
     Record<string, CSSProperties>
   >({});
+  const [scoreStoredSuccess, setScoreStoredSuccess] = useState(false)
+  const [scoreStoredLoading, setScoreStoredLoading] = useState(false)
+  const [username, setUsername] = useState("")
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [leaderboardLoading, setLeaderboardLoading] = useState(true);
+  const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await fetch("/api/chessEngine/fetchLeaderboard", {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch leaderboard");
+        }
+
+        const data: LeaderboardEntry[] = await response.json();
+        setLeaderboard(data);
+      } catch (error) {
+        if ((error as Error).name === "AbortError") return; // component unmounted
+        console.error("Error fetching leaderboard:", error);
+        setLeaderboardError("Couldn't load the leaderboard. Please try again.");
+      } finally {
+        if (!controller.signal.aborted) setLeaderboardLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+
+    return () => controller.abort(); // cleanup
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // stop the page reload
+    handleSaveGame();
+  };
+
+  const handleSaveGame = async () => {
+    if (chessGame.isCheckmate() && chessGame.turn() === playersColor) {
+      console.log("you lost... not worth storing that...")
+      return;
+    }
+
+    // get username
+    // const username = "john";
+    if (username == "") {
+      console.error("please user valid username: ", username);
+      return;
+    }
+    console.log("username: ", username);
+
+    setScoreStoredLoading(true)
+    const data = {
+      username,
+      finalFen: fen,
+      gameHistory: chessGame.history({ verbose: true })
+    }
+
+    try {
+    const response = await fetch("/api/chessEngine/storeGame", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to send message");
+    }
+
+    setScoreStoredSuccess(true);
+
+  } catch {
+      console.error("Something went wrong. Please try again.");
+  } finally {
+      setScoreStoredLoading(false)
+  }
+  }
 
   const getBestMove = async (fen: string) => {
     try {
@@ -149,6 +248,7 @@ const ChessEngineComponent = () => {
 
     // make the move
     chessGame.move(move);
+    setFen(chessGame.fen())
     setChessPosition(chessGame.fen());
   }
 
@@ -248,6 +348,7 @@ const ChessEngineComponent = () => {
     }
 
     // update the position state
+    setFen(chessGame.fen());
     setChessPosition(chessGame.fen());
 
     // make random cpu move after a short delay
@@ -313,16 +414,30 @@ const ChessEngineComponent = () => {
                     : "White wins!"
                   : ""}
               </p>
+              {chessGame.isCheckmate() && chessGame.turn() !== "w" && (
+                <div className="flex flex-col gap-2 border border-black rounded-xl bg-gray-600">
+                  <form onSubmit={handleSubmit}>
+                    <label htmlFor="usernameEntry">
+                      enter a username for the leaderboard:
+                    </label>
+                    <input
+                      id="usernameEntry"
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <button type="submit">Store Game</button>
+                  </form>
+                </div>
+              )}
             </div>
           )}
         </div>
 
         <aside className="w-full max-w-80 rounded-lg p-4 lg:mt-0">
-          {/* <h2 className="mb-3 text-lg font-bold">Captured pieces</h2> */}
           <div className="flex flex-col gap-3">
             {(["w", "b"] as const).map((color) => (
               <div key={color}>
-                {/* <h3 className="text-sm font-semibold"> {color === "w" ? "White" : "Black"} captured </h3> */}
                 <div
                   className="min-h-8 text-2xl tracking-wide"
                   aria-label={`${color === "w" ? "White" : "Black"} captured pieces`}
@@ -337,6 +452,8 @@ const ChessEngineComponent = () => {
             ))}
           </div>
         </aside>
+
+
       </div>
 
       <section className="w-full max-w-200 rounded-lg bg-white/70 p-4 shadow-md">
@@ -362,6 +479,18 @@ const ChessEngineComponent = () => {
         ) : (
           <p className="text-sm text-gray-600">No moves yet.</p>
         )}
+      </section>
+
+      <section className="flex flex-col justify-center items-center border-2 border-black rounded-xl p-4">
+        <h1>Leaderboard</h1>
+        <div className="flex flex-col gap-2">
+          {leaderboard.map((leaderboardItem) => (
+            <div  className="flex flex-row gap-10 border border-black px-4 py-2">
+              <p>{leaderboardItem.username}</p>
+              <p>{leaderboardItem.playersMoves}</p>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   );
