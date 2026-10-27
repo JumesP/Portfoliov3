@@ -8,8 +8,8 @@ const CanHerbEatIt = () => {
         <div className="MainContent flex flex-row justify-center">
             <div className="Content flex flex-col gap-10 mt-20 max-w-300">
                 <div className="flex flex-col gap-4 justify-center items-center">
-                    <h1 className="text-4xl font-bold mb-4">Can Herb Eat It?</h1>
-                    <p className="text-lg text-gray-700 mb-8">
+                    <h1 className="text-4xl font-bold mb-4 text-center">Can Herb Eat It?</h1>
+                    <p className="text-lg text-gray-700 mb-8 text-center">
                         A simple tool to check if a food is safe for your hamster, Herb.
                     </p>
                 </div>
