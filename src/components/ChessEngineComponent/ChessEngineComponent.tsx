@@ -62,7 +62,7 @@ const ChessEngineComponent = () => {
   >({});
   const [scoreStoredSuccess, setScoreStoredSuccess] = useState(false)
   const [scoreStoredLoading, setScoreStoredLoading] = useState(false)
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState("Guest")
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState(true);
   const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
@@ -396,7 +396,7 @@ const ChessEngineComponent = () => {
         <div className="relative w-full max-w-200">
           <Chessboard options={chessboardOptions} />
           {chessGame.isGameOver() && (
-            <div className="absolute top-0 left-0 flex h-full w-full flex-col items-center justify-center bg-gray-800/70 text-center text-white">
+            <div className="absolute top-0 left-0 flex h-full w-full flex-col items-center justify-center gap-2 bg-gray-800/70 text-center text-white">
               <h2 className="text-2xl font-bold">Game Over!</h2>
               <p className="text-xl font-medium">
                 {chessGame.isCheckmate()
@@ -415,19 +415,24 @@ const ChessEngineComponent = () => {
                   : ""}
               </p>
               {chessGame.isCheckmate() && chessGame.turn() !== "w" && (
-                <div className="flex flex-col gap-2 border border-black rounded-xl bg-gray-600">
-                  <form onSubmit={handleSubmit}>
-                    <label htmlFor="usernameEntry">
-                      enter a username for the leaderboard:
-                    </label>
-                    <input
-                      id="usernameEntry"
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <button type="submit">Store Game</button>
-                  </form>
+                <div className="flex flex-row gap-3 border border-black rounded-xl bg-gray-600">
+                  {scoreStoredSuccess ? (
+                    <p className="p-4">Score saved! Thanks, {username}.</p>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="flex flex-col p-4 gap-2">
+                      <label htmlFor="usernameEntry">
+                        enter a username for the leaderboard:
+                      </label>
+                      <input
+                        id="usernameEntry"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="bg-white mx-4"
+                      />
+                      <button type="submit" className="border py-1 px-2 rounded-2xl w-fit mx-auto cursor-pointer">Store Game</button>
+                    </form>
+                  )}
                 </div>
               )}
             </div>
