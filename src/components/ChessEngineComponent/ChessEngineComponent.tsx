@@ -67,6 +67,8 @@ const ChessEngineComponent = () => {
   const [leaderboardLoading, setLeaderboardLoading] = useState(true);
   const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
 
+  const [currentTab, setCurrentTab] = useState("move-history")
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -391,8 +393,8 @@ const ChessEngineComponent = () => {
   );
 
   return (
-    <div className="chess flex w-full max-w-250 flex-col items-center gap-6">
-      <div className="flex w-full flex-col items-center gap-6 lg:flex-row lg:items-start lg:justify-center">
+    <div className="flex w-full max-w-300 flex-col items-center gap-6 mb-48">
+      <div className="flex w-full flex-col items-center gap-2 lg:flex-row lg:items-start lg:justify-center">
         <div className="relative w-full max-w-200">
           <Chessboard options={chessboardOptions} />
           {chessGame.isGameOver() && (
@@ -428,7 +430,7 @@ const ChessEngineComponent = () => {
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="bg-white mx-4"
+                        className="bg-white mx-4 text-black text-center"
                       />
                       <button type="submit" className="border py-1 px-2 rounded-2xl w-fit mx-auto cursor-pointer">Store Game</button>
                     </form>
@@ -439,64 +441,80 @@ const ChessEngineComponent = () => {
           )}
         </div>
 
-        <aside className="w-full max-w-80 rounded-lg p-4 lg:mt-0">
-          <div className="flex flex-col gap-3">
-            {(["w", "b"] as const).map((color) => (
-              <div key={color}>
-                <div
-                  className="min-h-8 text-2xl tracking-wide"
-                  aria-label={`${color === "w" ? "White" : "Black"} captured pieces`}
-                >
-                  {capturedPieces[color].length > 0 ? (
-                    capturedPieces[color].join(" ")
-                  ) : (
-                    <span className="text-sm text-black"></span>
-                  )}
+        <aside className="w-full lg:w-[50%] max-w-200 h-full min-h-200 bg-stone-700">
+          <ul className="w-full h-20px flex flex-row justify-around bg-stone-500">
+            <li className={`text-sm md:text-md xl:text-lg text-white w-1/3 p-2 cursor-pointer border-2 border-black rounded-t-2xl ${currentTab === "taken-pieces" ? "bg-stone-700 border-b-0" : "bg-gray-500"}`} onClick={() => setCurrentTab("taken-pieces")}>Taken Pieces</li>
+            <li className={`text-sm md:text-md xl:text-lg text-white w-1/3 p-2 cursor-pointer border-2 border-black rounded-t-2xl ${currentTab === "move-history" ? "bg-stone-700 border-b-0" : "bg-gray-500"}`} onClick={() => setCurrentTab("move-history")}>Move History</li>
+            <li className={`text-sm md:text-md xl:text-lg text-white w-1/3 p-2 cursor-pointer border-2 border-black rounded-t-2xl ${currentTab === "leaderboard" ? "bg-stone-700 border-b-0" : "bg-gray-500"}`} onClick={() => setCurrentTab("leaderboard")}>Leaderboard</li>
+          </ul>
+
+          {currentTab === "taken-pieces" && (
+            <div className="flex flex-col justify-center items-center py-5">
+              <h2 className="text-2xl text-white font-semibold pb-5">Taken Pieces</h2>
+
+              {(["w", "b"] as const).map((color) => (
+
+                <div className="w-full justify-center items-center text-center" key={color}>
+                  <p className="w-full text-white text-lg">{color === "w" ? "White has captured" : "Black has captured"}</p>
+                  <div
+                    className="min-h-8 text-4xl tracking-wide"
+                    aria-label={`${color === "w" ? "White" : "Black"} captured pieces`}
+                  >
+                    {capturedPieces[color].length > 0 ? (
+                      capturedPieces[color].join(" ")
+                    ) : (
+                      <span className="text-sm text-black"></span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </aside>
-
-
-      </div>
-
-      <section className="w-full max-w-200 rounded-lg bg-white/70 p-4 shadow-md">
-        <h2 className="mb-3 text-lg font-bold">Move history</h2>
-        {moveRows.length > 0 ? (
-          <ol
-            className="grid grid-cols-[2rem_1fr_1fr] gap-x-3 gap-y-1 text-sm"
-            aria-label="Previous moves"
-          >
-            <li className="contents font-semibold text-gray-600">
-              <span />
-              <span>White</span>
-              <span>Black</span>
-            </li>
-            {moveRows.map((move) => (
-              <li className="contents" key={move.number}>
-                <span className="text-gray-500">{move.number}.</span>
-                <span>{move.white}</span>
-                <span>{move.black ?? "..."}</span>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="text-sm text-gray-600">No moves yet.</p>
-        )}
-      </section>
-
-      <section className="flex flex-col justify-center items-center border-2 border-black rounded-xl p-4">
-        <h1>Leaderboard</h1>
-        <div className="flex flex-col gap-2">
-          {leaderboard.map((leaderboardItem) => (
-            <div  className="flex flex-row gap-10 border border-black px-4 py-2">
-              <p>{leaderboardItem.username}</p>
-              <p>{leaderboardItem.playersMoves}</p>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          )}
+
+
+          {currentTab === "move-history" && (
+            <div className="flex flex-col justify-center items-center py-5">
+              <h2 className="text-2xl text-white font-semibold pb-5">Move History</h2>
+              {moveRows.length > 0 ? (
+                <ol
+                  className="w-[80%] grid grid-cols-[2rem_1fr_1fr] gap-x-3 gap-y-1 text-sm"
+                  aria-label="Previous moves"
+                >
+                  <li className="contents font-semibold text-white text-2xl">
+                    <span />
+                    <span>White</span>
+                    <span>Black</span>
+                  </li>
+                  {moveRows.map((move) => (
+                    <li className="contents text-xl text-gray-300" key={move.number}>
+                      <span className="text-gray-400">{move.number}.</span>
+                      <span>{move.white}</span>
+                      <span>{move.black ?? "..."}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="text-sm text-gray-300">No moves yet.</p>
+              )}
+            </div>
+          )}
+
+
+          {currentTab === "leaderboard" && (
+            <div className="flex flex-col justify-center items-center py-5">
+              <h2 className="text-2xl text-white font-semibold pb-5">Leaderboard</h2>
+              <div className="flex flex-col gap-2">
+                {leaderboard.map((leaderboardItem) => (
+                  <div  className="flex flex-row justify-between gap-10 w-60 border border-black bg-white px-4 py-2">
+                    <p>{leaderboardItem.username}</p>
+                    <p>{leaderboardItem.playersMoves}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </aside>
+      </div>
     </div>
   );
 };
