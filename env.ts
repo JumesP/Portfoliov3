@@ -5,6 +5,7 @@ interface RouteConfig {
     callAi: string;    // standAlone-callAI
     getBestMove: string; // standAlone-getBestMove
     EatDB: string;     // standAlone-DB-canHerbEatIt
+    ChessEngineDB: string; // standAlone-chessWin
 }
 
 // Reads a required env var and throws immediately if it's missing,
@@ -46,6 +47,10 @@ function loadConfig(): RouteConfig {
                 "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
                 process.env.NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL
             ),
+            ChessEngineDB: requireEnv(
+                "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
+                process.env.NEXT_PUBLIC_PRODUCTION_DB_CHESS_ENGINE_URL
+            )
         };
     }
 
@@ -65,8 +70,12 @@ function loadConfig(): RouteConfig {
             ),
             getBestMove: requireEnv(
                 "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
-                process.env.NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL
+                process.env.NEXT_PUBLIC_STAGING_CHESS_ENGINE_URL
             ),
+            ChessEngineDB: requireEnv(
+                "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
+                process.env.NEXT_PUBLIC_STAGING_DB_CHESS_ENGINE_URL
+            )
         };
     }
 
@@ -85,8 +94,12 @@ function loadConfig(): RouteConfig {
         ),
         getBestMove: requireEnv(
             "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
-            process.env.NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL
+            process.env.NEXT_PUBLIC_STAGING_CHESS_ENGINE_URL
         ),
+        ChessEngineDB: requireEnv(
+            "NEXT_PUBLIC_PRODUCTION_CHESS_ENGINE_URL",
+            process.env.NEXT_PUBLIC_STAGING_DB_CHESS_ENGINE_URL
+        )
     };
 }
 
