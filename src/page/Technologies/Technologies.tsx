@@ -64,10 +64,10 @@ const Technologies = () => {
         <div className="MainContent flex flex-row justify-center">
             <div className="Content flex flex-col gap-20 mt-20 max-w-[1200px]">
                 <div className="flex flex-col gap-2 justify-center items-center">
-                    <h1 className="text-5xl font-bold mb-5">Technologies</h1>
-                    <p className="text-lg font-medium">As a developer, I've worked with a wide range of technologies across different domains.</p>
-                    <p className="text-lg font-medium">Below are the key tools and frameworks I've mastered throughout my journey,</p>
-                    <p className="text-lg font-medium">showcasing both my proficiency level and years of experience with each technology.</p>
+                    <h1 className="text-5xl font-bold mb-5 text-center">Technologies</h1>
+                    <p className="text-lg font-medium text-center">As a developer, I've worked with a wide range of technologies across different domains.</p>
+                    <p className="text-lg font-medium text-center">Below are the key tools and frameworks I've mastered throughout my journey,</p>
+                    <p className="text-lg font-medium text-center">showcasing both my proficiency level and years of experience with each technology.</p>
                 </div>
                 <div className="Content flex flex-col gap-8">
                     <div className="flex flex-col justify-center items-center">

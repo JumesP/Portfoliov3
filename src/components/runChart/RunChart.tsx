@@ -140,12 +140,12 @@ const RunLineChart = () => {
 
 const RunChart = () => {
   return (
-    <div className="flex items-start gap-8 w-[1200px]">
+    <div className="flex flex-col md:flex-row justify-center items-start md:items-start gap-8 max-w-300 mb-24">
       <div className="flex-1 basis-[400px] min-w-0 border-2 border-gray-200 rounded-lg p-4 bg-gray-200">
         <RunTable />
       </div>
 
-      <div className="flex-1 basis-[400px] min-w-0  h-full">
+      <div className="flex-1 basis-[400px] min-w-0 h-full">
         <div className="border-2 border-gray-200 rounded-lg p-4 bg-gray-200">
           <RunLineChart />
         </div>

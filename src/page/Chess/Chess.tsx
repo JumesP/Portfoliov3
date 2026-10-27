@@ -117,10 +117,10 @@ const Chess = () => {
         <div className="MainContent flex-1 flex flex-row justify-center w-full">
             <div className="Content flex flex-col gap-20 mt-20 w-full max-w-300">
                 <div className="flex flex-col gap-2 justify-center items-center">
-                    <h1 className="text-5xl font-bold mb-5">Chess!</h1>
-                    <p className="text-lg font-medium">In my free time, I love learning how to play Chess!</p>
-                    <p className="text-lg font-medium">I like how every move is 100% skill and 0% luck based</p>
-                    <p className="text-lg font-medium">so if im doing bad, its because im bad...</p>
+                    <h1 className="text-5xl font-bold mb-5 text-center">Chess!</h1>
+                    <p className="text-lg font-medium text-center">In my free time, I love learning how to play Chess!</p>
+                    <p className="text-lg font-medium text-center">I like how every move is 100% skill and 0% luck based</p>
+                    <p className="text-lg font-medium text-center">so if im doing bad, its because im bad...</p>
                     <button
                         className="w-48 mt-16 px-5 py-2.5 rounded-lg font-medium bg-white text-black hover:bg-gray-200 transition-all duration-300"
                         onClick={() => {

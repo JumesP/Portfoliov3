@@ -504,8 +504,8 @@ const ChessEngineComponent = () => {
             <div className="flex flex-col justify-center items-center py-5">
               <h2 className="text-2xl text-white font-semibold pb-5">Leaderboard</h2>
               <div className="flex flex-col gap-2">
-                {leaderboard.map((leaderboardItem) => (
-                  <div  className="flex flex-row justify-between gap-10 w-60 border border-black bg-white px-4 py-2">
+                {leaderboard.map((leaderboardItem, index) => (
+                  <div key={index} className="flex flex-row justify-between gap-10 w-60 border border-black bg-white px-4 py-2">
                     <p>{leaderboardItem.username}</p>
                     <p>{leaderboardItem.playersMoves}</p>
                   </div>
